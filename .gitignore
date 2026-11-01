@@ -1,0 +1,52 @@
+# =========================
+# PYTHON
+# =========================
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+build/
+dist/
+
+# =========================
+# VIRTUAL ENVIRONMENT
+# =========================
+.venv/
+venv/
+env/
+
+# =========================
+# ENVIRONMENT VARIABLES
+# =========================
+.env
+.env.*
+!.env.example
+
+# =========================
+# DATASETS
+# =========================
+data/raw/
+data/processed/
+
+# =========================
+# VECTOR DATABASE
+# =========================
+storage/
+
+# =========================
+# LOGS
+# =========================
+logs/
+*.log
+
+# =========================
+# JUPYTER NOTEBOOK
+# =========================
+.ipynb_checkpoints/
+
+# =========================
+# OS FILES
+# =========================
+.DS_Store
+Thumbs.db
