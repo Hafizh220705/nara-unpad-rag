@@ -1,0 +1,15 @@
+{
+  "audited_at_utc": "2026-11-05T09:10:38.425757+00:00",
+  "input_dir": "data/raw/pdf",
+  "csv_path": "data/manifests/pdf_audit.csv",
+  "sample_pages_per_pdf": 5,
+  "min_chars_per_page": 40,
+  "note": "is_scanned/ocr_recommended adalah indikasi dari halaman sampel, bukan OCR atau pemeriksaan seluruh halaman.",
+  "total_pdf": 100,
+  "valid_pdf": 100,
+  "invalid_pdf": 0,
+  "duplicates": 0,
+  "password_required": 0,
+  "ocr_recommended": 5,
+  "text_extractable": 95
+}
