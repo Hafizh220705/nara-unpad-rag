@@ -59,6 +59,57 @@ PDF akan divalidasi sebelum disalin ke `data/raw/pdf/`. Hasil dan kegagalan
 dicatat secara append-only di `data/manifests/local_ingest.jsonl`. Status hukum
 yang tidak dinyatakan secara eksplisit akan tetap diklasifikasikan `unknown`.
 
+## Document manifest dan metadata hukum
+
+Stage 2 menggabungkan atribut teknis dari `pdf_audit.csv` dengan metadata hukum
+terverifikasi yang bersifat opsional. PDF sumber tidak diubah.
+
+Tanpa metadata terverifikasi:
+
+```powershell
+python scripts/build_document_manifest.py
+```
+
+Dengan metadata terverifikasi:
+
+```powershell
+python scripts/build_document_manifest.py `
+  --metadata data/manifests/metadata_verified.csv
+```
+
+Template metadata tersedia di
+`examples/metadata/metadata_verified_template.csv`. `file_path` adalah matching
+key dan dinormalisasi ke path relatif POSIX. Baris metadata ganda atau path yang
+tidak aman tidak akan ditempelkan secara diam-diam.
+
+Output default:
+
+- `data/manifests/documents_manifest.csv`
+- `data/manifests/metadata_review.csv`
+
+`document_id` adalah SHA-256 penuh atas canonical relative path dengan namespace
+versi. ID ini mewakili source record, sedangkan kolom `sha256` tetap menjadi
+identitas konten untuk deteksi duplikat.
+
+Status hukum dinormalisasi menjadi `Berlaku`, `Tidak Berlaku`, atau `Unknown`.
+Nilai sumber tetap disimpan di `status_raw`. Status `Berlaku` saja tidak cukup
+untuk active index: metadata juga harus memiliki provenance, tanggal verifikasi,
+source URL, judul terverifikasi, dan identitas dokumen yang memadai.
+
+`ready_for_extraction` hanya menilai usability PDF dan tidak diblokir oleh
+metadata hukum yang belum lengkap. `ready_for_active_index` bersifat lebih ketat
+dan hanya bernilai benar untuk regulasi aktif yang telah terverifikasi.
+
+Review queue menggunakan reason code yang dapat diproses mesin, antara lain:
+`metadata_not_found`, `metadata_unverified`, `unknown_legal_status`,
+`title_unverified`, `missing_source_url`, `metadata_duplicate_path`,
+`invalid_pdf`, `duplicate_pdf`, `password_required`, `unsafe_file_path`,
+`invalid_year`, dan `invalid_date:<field>`.
+
+Keterbatasan: judul dari filename hanya provisional, status hukum tidak pernah
+disimpulkan dari nama file atau isi PDF, dan validasi metadata tidak menggantikan
+verifikasi manual terhadap sumber resmi JDIH Unpad.
+
 ## Pemeriksaan kualitas
 
 ```powershell
